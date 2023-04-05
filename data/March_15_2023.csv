@@ -1,0 +1,156 @@
+variable,iso3c,2021,2022
+"Agriculture, Livestock and Forestry, value added (current US$) (millions)",AIA,0.8728355555555555,0.8425259259259258
+"Agriculture, Livestock and Forestry, value added (current US$) (millions)",ATG,16.07334074074074,16.872995555555555
+"Agriculture, Livestock and Forestry, value added (current US$) (millions)",DMA,110.10938000000002,118.5537262962963
+"Agriculture, Livestock and Forestry, value added (current US$) (millions)",GRD,54.90491999999999,50.01529259259259
+"Agriculture, Livestock and Forestry, value added (current US$) (millions)",MSR,0.4726477777777778,0.3677022222222223
+"Agriculture, Livestock and Forestry, value added (current US$) (millions)",KNA,8.95278222222222,8.715044814814815
+"Agriculture, Livestock and Forestry, value added (current US$) (millions)",LCA,24.01181564543757,25.293398605866326
+"Agriculture, Livestock and Forestry, value added (current US$) (millions)",VCT,51.03993069980804,60.72188959934256
+Exports of goods (current US$) (millions),AIA,6.925925925925926,NA
+Exports of goods (current US$) (millions),ATG,19.14814814814815,NA
+Exports of goods (current US$) (millions),DMA,17.15185185185185,NA
+Exports of goods (current US$) (millions),GRD,29.488888888888884,NA
+Exports of goods (current US$) (millions),MSR,8.348148148148148,NA
+Exports of goods (current US$) (millions),KNA,47.18148148148148,NA
+Exports of goods (current US$) (millions),LCA,59.05555555555556,NA
+Exports of goods (current US$) (millions),VCT,34.3037037037037,NA
+Exports of services (current US$) (millions),AIA,80.709974900482,186.26117170504992
+Exports of services (current US$) (millions),ATG,704.8135583746159,1017.8328581321209
+Exports of services (current US$) (millions),DMA,102.03058906663345,158.16706133212537
+Exports of services (current US$) (millions),GRD,490.6199269382046,593.5145759875501
+Exports of services (current US$) (millions),MSR,6.089114998064135,9.33832378090651
+Exports of services (current US$) (millions),KNA,363.23253482691206,489.6341692660816
+Exports of services (current US$) (millions),LCA,623.995876315057,909.5765652389194
+Exports of services (current US$) (millions),VCT,100.17522146567542,174.44651421871973
+"Fishing, value added (current US$) (millions)",AIA,2.377724444444444,2.6118303703703702
+"Fishing, value added (current US$) (millions)",ATG,19.350429629629627,20.388202962962964
+"Fishing, value added (current US$) (millions)",DMA,3.276073333333333,3.488674444444444
+"Fishing, value added (current US$) (millions)",GRD,16.16832,14.638622222222223
+"Fishing, value added (current US$) (millions)",MSR,0.1128711111111111,0.08325333333333336
+"Fishing, value added (current US$) (millions)",KNA,4.9928977777777765,5.5815455555555555
+"Fishing, value added (current US$) (millions)",LCA,9.169885523130347,9.724663597279735
+"Fishing, value added (current US$) (millions)",VCT,6.423103136799913,6.68259650352663
+GDP in market prices (current EC$) (millions),AIA,812.64,1137.41
+GDP in market prices (current EC$) (millions),ATG,4213.4,4745.53
+GDP in market prices (current EC$) (millions),DMA,1499.22,1652.53
+GDP in market prices (current EC$) (millions),GRD,3031.56,3293.69
+GDP in market prices (current EC$) (millions),MSR,190.47,187.32000000000002
+GDP in market prices (current EC$) (millions),KNA,2324.2799999999997,2643.8900000000003
+GDP in market prices (current EC$) (millions),LCA,4767.538307051266,5346.358926638946
+GDP in market prices (current EC$) (millions),VCT,2402.3931571215485,2512.2685473480287
+GDP per capita (current EC$),AIA,51586.36450199962,71729.20476761051
+GDP per capita (current EC$),ATG,45198.940130230956,50611.96847370498
+GDP per capita (current EC$),DMA,20704.02695685798,22719.24880047294
+GDP per capita (current EC$),GRD,24328.38455982666,26257.513672092988
+GDP per capita (current EC$),MSR,43122.02852614897,42669.70387243736
+GDP per capita (current EC$),KNA,48823.257572574876,55477.47445286108
+GDP per capita (current EC$),LCA,26537.777730439946,29725.609382114384
+GDP per capita (current EC$),VCT,23026.42676380735,24168.512596182984
+"International tourism, receipts (current US$) (millions)",AIA,59.35925925925925,143.2074074074074
+"International tourism, receipts (current US$) (millions)",ATG,488.2962962962963,920.6370370370369
+"International tourism, receipts (current US$) (millions)",DMA,16.466666666666665,61.81481481481482
+"International tourism, receipts (current US$) (millions)",GRD,62.96666666666666,157.8148148148148
+"International tourism, receipts (current US$) (millions)",MSR,1.596296296296296,4.007407407407407
+"International tourism, receipts (current US$) (millions)",KNA,28.518518518518515,115.2148148148148
+"International tourism, receipts (current US$) (millions)",LCA,563.8777777777777,859.7925925925925
+"International tourism, receipts (current US$) (millions)",VCT,28.84444444444444,62.77037037037037
+"International tourism, receipts per arrival (current US$)",AIA,2068.5551735175372,1976.4468223554302
+"International tourism, receipts per arrival (current US$)",ATG,1936.0089140992961,1354.2623671675003
+"International tourism, receipts per arrival (current US$)",DMA,248.8765290288777,263.41839743128395
+"International tourism, receipts per arrival (current US$)",GRD,876.2286451158022,430.830170609152
+"International tourism, receipts per arrival (current US$)",MSR,999.5593589832788,801.4814814814814
+"International tourism, receipts per arrival (current US$)",KNA,232.59726870391663,214.42974013938897
+"International tourism, receipts per arrival (current US$)",LCA,1869.1564689741535,1166.8235372409538
+"International tourism, receipts per arrival (current US$)",VCT,508.1915545454367,283.5425689445267
+Public Sector Debt to GDP (%),AIA,52.7,34.6
+Public Sector Debt to GDP (%),ATG,81.52,72.78
+Public Sector Debt to GDP (%),DMA,99.03,95.47
+Public Sector Debt to GDP (%),GRD,69.36,62.83
+Public Sector Debt to GDP (%),MSR,4.24,3.79
+Public Sector Debt to GDP (%),KNA,47.07,41.43
+Public Sector Debt to GDP (%),LCA,89.61,80.16999999999999
+Public Sector Debt to GDP (%),VCT,84.25,85.43
+"Agriculture, forestry, and fishing, value added (% of GDP)",ATG,2.16286845046878,NA
+"Agriculture, forestry, and fishing, value added (% of GDP)",DMA,16.9913586270041,NA
+"Agriculture, forestry, and fishing, value added (% of GDP)",GRD,5.33781064659353,NA
+"Agriculture, forestry, and fishing, value added (% of GDP)",KNA,1.42281232386943,NA
+"Agriculture, forestry, and fishing, value added (% of GDP)",LCA,1.76300368168056,NA
+"Agriculture, forestry, and fishing, value added (% of GDP)",VCT,6.91441294838605,NA
+"Agriculture, forestry, and fishing, value added (current US$)",ATG,31818518.5185185,NA
+"Agriculture, forestry, and fishing, value added (current US$)",DMA,94162962.962963,NA
+"Agriculture, forestry, and fishing, value added (current US$)",GRD,59933333.3333333,NA
+"Agriculture, forestry, and fishing, value added (current US$)",KNA,12248148.1481481,NA
+"Agriculture, forestry, and fishing, value added (current US$)",LCA,29817243.2782102,NA
+"Agriculture, forestry, and fishing, value added (current US$)",VCT,62518842.2127715,NA
+"Employment to population ratio, 15+, female (%) (national estimate)",LCA,50.2200012207031,NA
+"Employment to population ratio, 15+, total (%) (national estimate)",LCA,55.1399993896484,NA
+Fixed broadband subscriptions (per 100 people),VCT,26.7147184,NA
+"Foreign direct investment, net inflows (% of GDP)",ATG,16.6254058878457,NA
+"Foreign direct investment, net inflows (% of GDP)",DMA,6.09528324921466,NA
+"Foreign direct investment, net inflows (% of GDP)",GRD,12.8451324604035,NA
+"Foreign direct investment, net inflows (% of GDP)",KNA,3.07156162641461,NA
+"Foreign direct investment, net inflows (% of GDP)",LCA,5.06425618854059,NA
+"Foreign direct investment, net inflows (% of GDP)",VCT,17.7326542338426,NA
+"Foreign direct investment, net inflows (BoP, current US$)",ATG,244580656.306513,NA
+"Foreign direct investment, net inflows (BoP, current US$)",DMA,33778931.0109904,NA
+"Foreign direct investment, net inflows (BoP, current US$)",GRD,144226098.756704,NA
+"Foreign direct investment, net inflows (BoP, current US$)",KNA,26441253.8571359,NA
+"Foreign direct investment, net inflows (BoP, current US$)",LCA,85650506.7833752,NA
+"Foreign direct investment, net inflows (BoP, current US$)",VCT,160335377.758717,NA
+GDP growth (annual %),ATG,5.2708488395119,NA
+GDP growth (annual %),DMA,6.68192571791273,NA
+GDP growth (annual %),GRD,4.68794388997816,NA
+GDP growth (annual %),KNA,-0.879622643346366,NA
+GDP growth (annual %),LCA,12.2298622129514,NA
+GDP growth (annual %),VCT,1.35211425548162,NA
+"GDP per capita, PPP (constant 2017 international $)",ATG,19124.4301561239,NA
+"GDP per capita, PPP (constant 2017 international $)",DMA,10878.0369756066,NA
+"GDP per capita, PPP (constant 2017 international $)",GRD,13688.2558016096,NA
+"GDP per capita, PPP (constant 2017 international $)",KNA,26485.8172352357,NA
+"GDP per capita, PPP (constant 2017 international $)",LCA,13045.9553824087,NA
+"GDP per capita, PPP (constant 2017 international $)",VCT,13695.0392209813,NA
+GDP per person employed (constant 2017 PPP $),LCA,28222.6160879184,NA
+GDP per person employed (constant 2017 PPP $),VCT,35233.6653762589,NA
+"Government expenditure on education, total (% of GDP)",ATG,3.8362500667572,NA
+"Government expenditure on education, total (% of GDP)",DMA,5.46584510803223,NA
+"Government expenditure on education, total (% of GDP)",KNA,2.44862008094788,NA
+"Manufacturing, value added (% of GDP)",ATG,2.31996656629843,NA
+"Manufacturing, value added (% of GDP)",DMA,2.50285706647775,NA
+"Manufacturing, value added (% of GDP)",GRD,3.31378357160293,NA
+"Manufacturing, value added (% of GDP)",KNA,4.78773980647687,NA
+"Manufacturing, value added (% of GDP)",LCA,3.20598220520976,NA
+"Manufacturing, value added (% of GDP)",VCT,4.11029383916331,NA
+"Manufacturing, value added (current US$)",ATG,34129629.6296296,NA
+"Manufacturing, value added (current US$)",DMA,13870370.3703704,NA
+"Manufacturing, value added (current US$)",GRD,37207407.4074074,NA
+"Manufacturing, value added (current US$)",KNA,41214814.8148148,NA
+"Manufacturing, value added (current US$)",LCA,54221980.5617359,NA
+"Manufacturing, value added (current US$)",VCT,37164516.1920448,NA
+Marine protected areas (% of territorial waters),ATG,0.299942076,NA
+Marine protected areas (% of territorial waters),DMA,0.034776829,NA
+Marine protected areas (% of territorial waters),GRD,0.098035686,NA
+Marine protected areas (% of territorial waters),KNA,3.977533102,NA
+Marine protected areas (% of territorial waters),LCA,0.218549892,NA
+Marine protected areas (% of territorial waters),VCT,0.220097497,NA
+"Mortality rate, infant (per 1,000 live births)",ATG,5.2,NA
+"Mortality rate, infant (per 1,000 live births)",DMA,32,NA
+"Mortality rate, infant (per 1,000 live births)",GRD,14.4,NA
+"Mortality rate, infant (per 1,000 live births)",KNA,12.3,NA
+"Mortality rate, infant (per 1,000 live births)",LCA,22.4,NA
+"Mortality rate, infant (per 1,000 live births)",VCT,12.6,NA
+"Mortality rate, neonatal (per 1,000 live births)",ATG,3.3,NA
+"Mortality rate, neonatal (per 1,000 live births)",DMA,28.3,NA
+"Mortality rate, neonatal (per 1,000 live births)",GRD,10.3,NA
+"Mortality rate, neonatal (per 1,000 live births)",KNA,9.8,NA
+"Mortality rate, neonatal (per 1,000 live births)",LCA,13,NA
+"Mortality rate, neonatal (per 1,000 live births)",VCT,8.5,NA
+"School enrollment, preprimary (% gross)",DMA,66.0313873291016,NA
+"School enrollment, preprimary (% gross)",KNA,93.6827011108398,NA
+Trained teachers in primary education (% of total teachers),DMA,61.8691596984863,NA
+Trained teachers in primary education (% of total teachers),KNA,67.7570114135742,NA
+Trained teachers in secondary education (% of total teachers),DMA,47.4332618713379,NA
+"Unemployment, female (% of female labor force) (national estimate)",LCA,21.4500007629395,NA
+"Unemployment, total (% of total labor force) (national estimate)",LCA,19.5200004577637,NA
+Intra-regional exports of goods (current US$) (millions),GRD,3.334991,2.925303
+Intra-regional exports of goods (current US$) (millions),VCT,18.471493,NA
