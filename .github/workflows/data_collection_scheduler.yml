@@ -33,6 +33,8 @@ jobs:
             any::readxl
             any::RCurl
             any::pxR
+            any::netstat
+            any::curl
             
       - name: Cache R packages
         uses: actions/cache@v2
