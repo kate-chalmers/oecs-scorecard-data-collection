@@ -612,6 +612,8 @@ wdi_indicators <- vals %>%
 wdi_values <- wdi_indicators %>%
   select("category"="indicator", year, "value" = "VALUE", country)
 
+print("WDI finished")
+
 # UNODC ------------------
 
 # host_url <- "https://public.tableau.com"
@@ -755,6 +757,9 @@ unodc_dat <- readxl::read_excel(tf, 1)
 
 colnames(unodc_dat) <- unodc_dat[2,]
 unodc_dat <- unodc_dat %>% .[-c(1:2),]
+
+print("UNODC started")
+
 
 # download.file(url,"./data/undoc_dat.xlsx",
 #               method="curl",
