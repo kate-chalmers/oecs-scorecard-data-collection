@@ -1,4 +1,4 @@
-# Load libraries 
+# Load libraries
 library(RSelenium)
 library(rvest)
 library(rjson)
@@ -55,13 +55,13 @@ currency_convert <- currency_convert %>%
   mutate(country = countrycode(country, "country.name", "country.name")) %>%
   select(country, year, "xr_rate" = PA.NUS.FCRF)
 
-currency_convert_temp <- currency_convert %>% 
+currency_convert_temp <- currency_convert %>%
   filter(country=="Grenada") %>%
-  mutate(country = "Montserrat") 
+  mutate(country = "Montserrat")
 
-currency_convert_temp2 <- currency_convert %>% 
+currency_convert_temp2 <- currency_convert %>%
   filter(country=="Grenada") %>%
-  mutate(country = "Anguilla") 
+  mutate(country = "Anguilla")
 
 currency_convert_fin <- rbind(currency_convert, currency_convert_temp, currency_convert_temp2)
 
@@ -83,13 +83,13 @@ remDr$findElement(using = "id", value = "statistics-select-all-countries")$click
 remDr$findElements("css", ".form-buttom")[[1]]$clickElement()
 
 # Give the page time to fully load
-Sys.sleep(5) 
+Sys.sleep(5)
 
 html <- remDr$getPageSource()[[1]]
 
 gdp_dat <- read_html(html) %>% # parse HTML
   html_nodes(".dataTables_scroll") %>%
-  html_table(fill = TRUE) 
+  html_table(fill = TRUE)
 
 gdp_dat <- gdp_dat %>% as.data.frame()
 
@@ -108,11 +108,14 @@ gdp_dat_tidy <- gdp_dat %>%
 # St Lucia gdp
 url <- "https://www.eccb-centralbank.org/files/Statistics%20Documents/SLU%20Rebased%20GDP_Saint%20Lucia_2007%20to%202023%20(posted%2016%20February%202022).XLSX"
 
-download.file(url,"./data/st-lucia-gdp.xlsx",
-              method="curl", 
-              mode="wb") 
+GET(url, write_disk(tf <- tempfile(fileext = ".xlsx")), config = httr::config(ssl_verifypeer = FALSE))
+gdp_lca <- readxl::read_excel(tf, 1)
 
-gdp_lca <- readxl::read_excel("./data/st-lucia-gdp.xlsx")
+# download.file(url,"./data/st-lucia-gdp.xlsx",
+#               method="curl",
+#               mode="wb")
+#
+# gdp_lca <- readxl::read_excel("./data/st-lucia-gdp.xlsx")
 
 # Keep only table 1 (GDP in current prices)
 gdp_lca <- gdp_lca[1:82,]
@@ -123,7 +126,7 @@ lca_breakdown <- gdp_lca %>%
   mutate_if(is.numeric, as.character) %>%
   pivot_longer(!INDUSTRIES, names_to="year", names_transform = list(year = as.numeric), values_transform = list(value = as.numeric)) %>%
   drop_na() %>%
-  filter(INDUSTRIES %in% c("GDP at Market Prices", "Agriculture, Forestry and Fishing", "Fishing")) 
+  filter(INDUSTRIES %in% c("GDP at Market Prices", "Agriculture, Forestry and Fishing", "Fishing"))
 
 gdp_lca <- lca_breakdown %>%
   filter(INDUSTRIES == "GDP at Market Prices") %>%
@@ -146,11 +149,14 @@ ag_fishing_lca <- lca_breakdown %>%
 # St Vincent gdp
 url <- "https://www.eccb-centralbank.org/files/Statistics%20Documents/Rebased%20GDP_Saint%20Vincent%20and%20the%20Grenadines_2000%20to%202023%20(posted%2016%20February%202022).XLSX"
 
-download.file(url,"./data/st-vincent-gdp.xlsx",
-              method="curl", 
-              mode="wb") 
+GET(url, write_disk(tf <- tempfile(fileext = ".xlsx")), config = httr::config(ssl_verifypeer = FALSE))
+gdp_vct <- readxl::read_excel(tf, 1)
 
-gdp_vct <- readxl::read_excel("./data/st-vincent-gdp.xlsx")
+# download.file(url,"./data/st-vincent-gdp.xlsx",
+#               method="curl",
+#               mode="wb")
+#
+# gdp_vct <- readxl::read_excel("./data/st-vincent-gdp.xlsx")
 
 # Keep only table 1 (GDP in current prices)
 gdp_vct <- gdp_vct[1:76,]
@@ -161,7 +167,7 @@ vct_breakdown <- gdp_vct %>%
   mutate_if(is.numeric, as.character) %>%
   pivot_longer(!Industry, names_to="year", names_transform = list(year = as.numeric), values_transform = list(value = as.numeric)) %>%
   drop_na() %>%
-  filter(Industry %in% c("GDP at Market Prices", "Agriculture, forestry and fishing", "Fishing and aquaculture")) 
+  filter(Industry %in% c("GDP at Market Prices", "Agriculture, forestry and fishing", "Fishing and aquaculture"))
 
 gdp_vct <- vct_breakdown %>%
   filter(Industry == "GDP at Market Prices") %>%
@@ -186,7 +192,7 @@ gdp_dat_full <- rbind(gdp_dat_tidy, gdp_vct, gdp_lca)
 # Agriculture LCA, VCT
 agri_dat_small <- rbind(ag_fishing_vct, ag_fishing_lca)
 
-agri_dat_small <- agri_dat_small %>% 
+agri_dat_small <- agri_dat_small %>%
   mutate(value = value*(1/2.7),
          category = ifelse(category == "Fishing, value added (millions)", "Fishing, value added (current US$) (millions)", "Agriculture, Livestock and Forestry, value added (current US$) (millions)"))
 
@@ -209,13 +215,13 @@ remDr$findElement(using = "id", value = "statistics-select-all-countries")$click
 remDr$findElements("css", ".form-buttom")[[1]]$clickElement()
 
 # Give the page time to fully load
-Sys.sleep(5) 
+Sys.sleep(5)
 
 html <- remDr$getPageSource()[[1]]
 
 tourism_dat <- read_html(html) %>% # parse HTML
   html_nodes(".dataTables_scroll") %>%
-  html_table(fill = TRUE) 
+  html_table(fill = TRUE)
 
 tourism_dat <- tourism_dat %>% as.data.frame()
 
@@ -256,13 +262,13 @@ remDr$findElement(using = "id", value = "statistics-select-all-countries")$click
 remDr$findElements("css", ".form-buttom")[[1]]$clickElement()
 
 # Give the page time to fully load
-Sys.sleep(5) 
+Sys.sleep(5)
 
 html <- remDr$getPageSource()[[1]]
 
 pop_dat <- read_html(html) %>% # parse HTML
   html_nodes(".dataTables_scroll") %>%
-  html_table(fill = TRUE) 
+  html_table(fill = TRUE)
 
 pop_dat <- pop_dat %>% as.data.frame()
 
@@ -282,16 +288,16 @@ pop_dat <- pop_dat %>%
 new_dat_pop <- pop_dat %>% filter(year == current_year)
 
 if(nrow(new_dat_pop) < 1) {
-  
+
   # UN population projections
   # url <- "https://population.un.org/wpp/Download/Files/1_Indicators%20(Standard)/CSV_FILES/WPP2022_TotalPopulationBySex.zip"
-  # 
+  #
   # temp <- tempfile()
   # download.file(url, temp)
   # un_dat <- read.csv(unz(temp, "WPP2022_TotalPopulationBySex.csv"))
   # unlink(temp)
-  # 
-  # un_tidy <- un_dat %>% 
+  #
+  # un_tidy <- un_dat %>%
   #   filter(Variant == "Medium") %>%
   #   as.data.frame() %>%
   #   filter(Time > 2010) %>%
@@ -303,17 +309,17 @@ if(nrow(new_dat_pop) < 1) {
   #   filter(iso2c %in% clist_iso2c) %>%
   #   select(-Location, -iso2c) %>%
   #   rename("year" = "Time", "pop" = "PopTotal")
-  # 
+  #
   # pop_dat <- un_tidy %>% filter(year > 2020 & year < (current_year + 1))
-  
+
   pop_dat <- readRDS("./data/population_data.RDS")
-  
+
 }
 
 gdp_per_cap <- gdp_dat_full %>%
   filter(category == "GDP in market prices (current EC$) (millions)") %>%
   merge(., pop_dat, by=c("country", "year")) %>%
-  mutate(value = (value * 1e6) / pop, 
+  mutate(value = (value * 1e6) / pop,
          category = "GDP per capita (current EC$)") %>%
   select(-pop)
 
@@ -336,13 +342,13 @@ remDr$findElement(using = "id", value = "statistics-select-all-countries")$click
 remDr$findElements("css", ".form-buttom")[[1]]$clickElement()
 
 # Give the page time to fully load
-Sys.sleep(5) 
+Sys.sleep(5)
 
 html <- remDr$getPageSource()[[1]]
 
-goods_dat <- read_html(html) %>% 
+goods_dat <- read_html(html) %>%
   html_nodes(".dataTables_scroll") %>%
-  html_table(fill = TRUE) 
+  html_table(fill = TRUE)
 
 goods_dat <- goods_dat %>% as.data.frame()
 
@@ -365,27 +371,29 @@ goods_dat <- goods_dat %>%
 url <- "https://www.eccb-centralbank.org/p/external-sector-statistics"
 
 links_avail <- read_html(url) %>%
-  html_nodes("a") %>% 
+  html_nodes("a") %>%
   html_attr("href")
 
 link_needed <- sub(".*/files/", "", links_avail[grepl("Trade", links_avail)])
-url <- paste0("https://www.eccb-centralbank.org/files/", link_needed)
 
-download.file(url,"./data/export_services.xlsx",
-              method="curl", 
-              mode="wb") 
+url <- paste0("https://www.eccb-centralbank.org/files/", link_needed)
+GET(url, write_disk(tf <- tempfile(fileext = ".xlsx")), config = httr::config(ssl_verifypeer = FALSE))
+
+# download.file(url,"./data/export_services.xlsx",
+#               method="curl",
+#               mode="wb")
 
 iso2c_list <- c("AI", "DM", "GD", "KN", "AG", "MS", "VC", "LC")
 
 exports_services <- c()
 
 for(iso2c in iso2c_list) {
-  
-  temp <- readxl::read_excel("./data/export_services.xlsx", sheet=iso2c)
+
+  temp <- readxl::read_excel(tf, sheet=iso2c)
   temp <- temp[7:11,]
-  
+
   colnames(temp) <- temp[2,]
-  
+
   temp_fin <- temp %>%
     clean_names() %>%
     select(contains("exports")) %>%
@@ -395,9 +403,9 @@ for(iso2c in iso2c_list) {
     mutate(year = parse_number(year), year = ifelse(is.na(year), 1, year),
            year = year - 1, year = 2014 + year, value = value * (1/2.7),
            country = countrycode(iso2c, "iso2c", "country.name"))
-  
+
   exports_services <- rbind(exports_services, temp_fin)
-  
+
 }
 
 
@@ -417,13 +425,13 @@ remDr$findElement(using = "id", value = "statistics-select-all-countries")$click
 remDr$findElements("css", ".form-buttom")[[1]]$clickElement()
 
 # Give the page time to fully load
-Sys.sleep(5) 
+Sys.sleep(5)
 
 html <- remDr$getPageSource()[[1]]
 
-debt_dat <- read_html(html) %>% 
+debt_dat <- read_html(html) %>%
   html_nodes(".dataTables_scroll") %>%
-  html_table(fill = TRUE) 
+  html_table(fill = TRUE)
 
 debt_dat <- debt_dat %>% as.data.frame()
 
@@ -440,7 +448,7 @@ debt_dat <- debt_dat %>%
   drop_na()
 
 
-# Agriculture & fishing value added 
+# Agriculture & fishing value added
 
 url6 <- "https://www.eccb-centralbank.org/statistics/gdp-datas/country-report/5"
 
@@ -450,29 +458,29 @@ iso2c <- c("AI", "DM", "GD", "KN", "AG", "MS")
 agri_dat_complet <- c()
 
 for(iso2c_input in iso2c) {
-  
+
   remDr$navigate(url6)
-  
+
   selected_path <- paste0("//*/option[@value = '", iso2c_input, "']")
   country_name <- countrycode(iso2c_input, "iso2c", "country.name")
-  
+
   remDr$findElement(using = "xpath", value = selected_path)$clickElement()
-  
+
   remDr$findElement(using = "id", value = "start-date")$sendKeysToElement(list("2019-12-31"))
   remDr$findElement(using = "id", value = "end-date")$sendKeysToElement(list(end_date))
-  
+
   remDr$findElements("css", ".form-buttom")[[1]]$clickElement()
-  
-  Sys.sleep(5) 
-  
+
+  Sys.sleep(5)
+
   html <- remDr$getPageSource()[[1]]
-  
-  agri_dat <- read_html(html) %>% 
+
+  agri_dat <- read_html(html) %>%
     html_nodes(".dataTables_scroll") %>%
-    html_table(fill = TRUE) 
-  
+    html_table(fill = TRUE)
+
   agri_dat <- agri_dat %>% as.data.frame()
-  
+
   agri_dat_fin <- agri_dat %>%
     clean_names() %>%
     .[-1,] %>%
@@ -490,13 +498,13 @@ for(iso2c_input in iso2c) {
            value = value*(1/2.7)) %>%
     drop_na() %>%
     merge(., gdp_dat_tidy[c(1,3,4)] %>% rename("gdp" = "value"), by = c("country", "year")) %>%
-    mutate(value = (value/100) * (gdp*1e6), 
+    mutate(value = (value/100) * (gdp*1e6),
            value = value/1e6,
            category = ifelse(category == "Fishing", "Fishing, value added (current US$) (millions)", "Agriculture, Livestock and Forestry, value added (current US$) (millions)")) %>%
     select(-gdp)
-  
+
   agri_dat_complet <- rbind(agri_dat_complet, agri_dat_fin)
-  
+
 }
 
 agri_dat_complet <- agri_dat_complet %>% arrange(category, country, year)
@@ -507,33 +515,33 @@ unique(scraped_eccb_dat$category)
 
 scraped_eccb_dat <- scraped_eccb_dat %>% arrange(category, country, year)
 
-eccb_values <- scraped_eccb_dat 
+eccb_values <- scraped_eccb_dat
 
 # Comtradr -------------------------------------------------
 # This API can be finicky may have to run twice
 
-comtrade_names <- c("Saint Vincent and the Grenadines", "Saint Kitts and Nevis", "Anguilla", 
+comtrade_names <- c("Saint Vincent and the Grenadines", "Saint Kitts and Nevis", "Anguilla",
                     "Montserrat", "Dominica", "Grenada", "Antigua and Barbuda", "Saint Lucia")
 
 regional_exports <- c()
 for(i in 1:length(comtrade_names)) {
-  
+
   reporter <- comtrade_names[i]
   comtrade_names_short <- comtrade_names[!comtrade_names %in% reporter]
-  
+
   partner_list1 <- comtrade_names_short[1:5]
   partner_list2 <- c(comtrade_names_short[6:length(comtrade_names_short)], "World")
-  
-  temp <- ct_search(reporters = reporter, 
-                    partners = partner_list1, 
+
+  temp <- ct_search(reporters = reporter,
+                    partners = partner_list1,
                     trade_direction = "exports")
-  
-  temp2 <- ct_search(reporters = reporter, 
-                     partners = partner_list2, 
+
+  temp2 <- ct_search(reporters = reporter,
+                     partners = partner_list2,
                      trade_direction = "exports")
-  
+
   regional_exports <- rbind(regional_exports, temp, temp2)
-  
+
 }
 
 regional_tidy <- regional_exports %>%
@@ -557,33 +565,33 @@ comtrade_values <- regional_tidy
 # WDI -------------------------------------------------
 
 indic.codes <- c("SH.STA.OWAD.ZS",
-                 "SH.MED.BEDS.ZS", 
-                 "SH.XPD.CHEX.GD.ZS", 
-                 "EN.FSH.THRD.NO", 
+                 "SH.MED.BEDS.ZS",
+                 "SH.XPD.CHEX.GD.ZS",
+                 "EN.FSH.THRD.NO",
                  "ER.FSH.PROD.MT",
-                 "IT.NET.USER.ZS", 
+                 "IT.NET.USER.ZS",
                  "SE.XPD.TOTL.GD.ZS",
-                 "NV.AGR.EMPL.KD", 
-                 "SL.EMP.TOTL.SP.NE.ZS", 
-                 "NE.EXP.GNFS.ZS", 
+                 "NV.AGR.EMPL.KD",
+                 "SL.EMP.TOTL.SP.NE.ZS",
+                 "NE.EXP.GNFS.ZS",
                  "BX.KLT.DINV.WD.GD.ZS",
-                 "AG.LND.FRST.ZS", 
+                 "AG.LND.FRST.ZS",
                  "ER.MRN.PTMR.ZS",
-                 "SH.DYN.NCOM.ZS", 
-                 "SI.POV.UMIC", 
-                 "SE.PRE.ENRR", 
+                 "SH.DYN.NCOM.ZS",
+                 "SI.POV.UMIC",
+                 "SE.PRE.ENRR",
                  "SE.TER.ENRR",
-                 "SE.PRM.TCAQ.ZS", 
-                 "SE.SEC.TCAQ.ZS", 
-                 "SL.UEM.TOTL.NE.ZS", 
-                 "ST.INT.RCPT.CD", 
-                 "NV.AGR.TOTL.CD", 
+                 "SE.PRM.TCAQ.ZS",
+                 "SE.SEC.TCAQ.ZS",
+                 "SL.UEM.TOTL.NE.ZS",
+                 "ST.INT.RCPT.CD",
+                 "NV.AGR.TOTL.CD",
                  "SL.UEM.TOTL.FE.NE.ZS",
-                 "SL.EMP.TOTL.SP.FE.NE.ZS", 
-                 "SH.DYN.NMRT", 
-                 "SH.XPD.OOPC.CH.ZS", 
+                 "SL.EMP.TOTL.SP.FE.NE.ZS",
+                 "SH.DYN.NMRT",
+                 "SH.XPD.OOPC.CH.ZS",
                  "SH.STA.MMRT",
-                 "EN.ATM.GHGT.KT.CE", 
+                 "EN.ATM.GHGT.KT.CE",
                  "ST.INT.ARVL")
 
 vals <- WDI::WDI(indicator = indic.codes, country = clist_iso2c, start=2015, end=(current_year + 1)) %>% select(-iso3c)
@@ -591,7 +599,7 @@ vals <- WDI::WDI(indicator = indic.codes, country = clist_iso2c, start=2015, end
 labs <- lapply(vals, attr, "label")
 colnames(vals)[4:ncol(vals)] <- c(as.character(labs[c(4:ncol(vals))]))
 
-wdi_indicators <- vals %>% 
+wdi_indicators <- vals %>%
   pivot_longer(!c(iso2c, country, year), names_to="indicator",
                values_to="VALUE") %>%
   mutate(iso3c = countrycode(iso2c, origin="iso2c", destination="iso3c"),
@@ -608,35 +616,35 @@ wdi_values <- wdi_indicators %>%
 
 # host_url <- "https://public.tableau.com"
 # path <- "/views/Robbery_15704399184380/Robbery_?:embed=y&amp;:showVizHome=no&amp;:host_url=https%3A%2F%2Fpublic.tableau.com%2F&amp;:embed_code_version=3&amp;:tabs=no&amp;:toolbar=no&amp;:animate_transition=yes&amp;:display_static_image=yes&amp;:display_spinner=no&amp;:display_overlay=yes&amp;:display_count=yes&amp;:language=en-US&amp;:loadOrderID=0"
-# 
-# body <- read_html(modify_url(host_url, 
+#
+# body <- read_html(modify_url(host_url,
 #                              path = path))
-# 
-# data <- body %>% 
-#   html_nodes("textarea#tsConfigContainer") %>% 
+#
+# data <- body %>%
+#   html_nodes("textarea#tsConfigContainer") %>%
 #   html_text()
 # json <- fromJSON(data)
-# 
+#
 # url <- modify_url(host_url, path = paste(json$vizql_root, "/bootstrapSession/sessions/", json$sessionid, sep =""))
-# 
+#
 # resp <- POST(url, body = list(sheet_id = json$sheetId), encode = "form")
 # data <- content(resp, "text")
-# 
+#
 # extract <- str_match(data, "\\d+;(\\{.*\\})\\d+;(\\{.*\\})")
 # info <- fromJSON(extract[1,1])
 # data <- fromJSON(extract[1,3])
-# 
+#
 # worksheets = names(data$secondaryInfo$presModelMap$vizData$presModelHolder$genPresModelMapPresModel$presModelMap)
-# 
+#
 # for(i in 1:length(worksheets)){
 #   print(paste("[",i,"] ",worksheets[i], sep=""))
 # }
-# 
+#
 # # worksheet <- "Robbery"
 # # print(paste("you selected :", worksheet, sep=" "))
-# 
+#
 # columnsData <- data$secondaryInfo$presModelMap$vizData$presModelHolder$genPresModelMapPresModel$presModelMap[[worksheet]]$presModelHolder$genVizDataPresModel$paneColumnsData
-# 
+#
 # i <- 1
 # result <- list();
 # for(t in columnsData$vizDataColumns){
@@ -650,9 +658,9 @@ wdi_values <- wdi_indicators %>%
 #       columnIndex <- t$columnIndices[1]
 #     }
 #     result[[i]] <- list(
-#       fieldCaption = t[["fieldCaption"]], 
+#       fieldCaption = t[["fieldCaption"]],
 #       valueIndices = columnsData$paneColumnsList[[paneIndex + 1]]$vizPaneColumns[[columnIndex + 1]]$valueIndices,
-#       aliasIndices = columnsData$paneColumnsList[[paneIndex + 1]]$vizPaneColumns[[columnIndex + 1]]$aliasIndices, 
+#       aliasIndices = columnsData$paneColumnsList[[paneIndex + 1]]$vizPaneColumns[[columnIndex + 1]]$aliasIndices,
 #       dataType = t[["dataType"]],
 #       stringsAsFactors = FALSE
 #     )
@@ -660,7 +668,7 @@ wdi_values <- wdi_indicators %>%
 #   }
 # }
 # dataFull = data$secondaryInfo$presModelMap$dataDictionary$presModelHolder$genDataDictionaryPresModel$dataSegments[["0"]]$dataColumns
-# 
+#
 # cstring <- list();
 # for(t in dataFull) {
 #   if(t$dataType == "cstring"){
@@ -706,7 +714,7 @@ wdi_values <- wdi_indicators %>%
 #     }
 #   }
 # }
-# 
+#
 # df <- NULL
 # lengthList <- c()
 # for(i in 1:length(frameNames)){
@@ -724,11 +732,11 @@ wdi_values <- wdi_indicators %>%
 # df <- as.data.frame(df, stringsAsFactors = FALSE)
 # print(df)
 # unodc_dat <- df
-# 
+#
 # rm(body, columnsData, cstring, data, dataFull, extract, frameData, frameNames, index, json, resp, result, t,
 #    columnIndex, data_index, i, it, j, lengthList, max, name_index, paneIndex, vector, worksheet,
 #    worksheets)
-# 
+#
 # unodc_tidy <- unodc_dat %>%
 #   janitor::clean_names() %>%
 #   select(country_value, year_value, measure_values_alias, measure_names_alias) %>%
@@ -786,13 +794,13 @@ unodc_values <- c()
 
 lca_crime <- c()
 for(yoi in 2021:2030) {
-  
+
   crime_url <- paste0("https://www.stats.gov.lc/subjects/society/crime/crime-statistics-by-type-and-outcome-", yoi, "/")
-  
+
   test <- RCurl::url.exists(crime_url)
-  
+
   if(test == T) {
-    tidy_crime <- read_html(crime_url) %>% 
+    tidy_crime <- read_html(crime_url) %>%
       html_nodes("table") %>%
       html_table(fill = TRUE) %>%
       as.data.frame() %>%
@@ -808,19 +816,19 @@ for(yoi in 2021:2030) {
              country = "St. Lucia") %>%
       select(robbery, murder, year, country) %>%
       pivot_longer(!c(year, country)) %>%
-      mutate(category = ifelse(name == "Robbery", "Rates of police-recorded offenses (robbery) (per 100,000 population)", 
+      mutate(category = ifelse(name == "Robbery", "Rates of police-recorded offenses (robbery) (per 100,000 population)",
                                "Intentional homicides (per 100,000 people)")) %>%
       select(-name)
-    
+
     tidy_crime <- un_tidy %>%
       filter(country == "St. Lucia") %>%
       merge(., tidy_crime) %>%
       mutate(value = (value/pop)*1e5)
-    
+
     lca_crime <- rbind(lca_crime, tidy_crime)
-    
+
   }
-  
+
 }
 
 unodc_values <- rbind(unodc_values, lca_crime)
@@ -837,7 +845,7 @@ url_adult <- "https://ghoapi.azureedge.net/api/NCD_BMI_30A"
 url_teen <- "https://ghoapi.azureedge.net/api/NCD_BMI_PLUS2C"
 
 # Adult value
-obesity <- jsonlite::fromJSON(url_adult) 
+obesity <- jsonlite::fromJSON(url_adult)
 obesity <- obesity[[2]]
 
 obesity <- obesity %>%
@@ -850,8 +858,8 @@ obesity <- obesity %>%
   filter(country %in% clist_avail) %>%
   arrange(country, year)
 
-# Teen value  
-obesity_teen <- jsonlite::fromJSON(url_teen) 
+# Teen value
+obesity_teen <- jsonlite::fromJSON(url_teen)
 obesity_teen <- obesity_teen[[2]]
 
 teen_tidy <- obesity_teen %>%
@@ -873,7 +881,7 @@ teen_tidy <- obesity_teen %>%
 #          category = "Prevalence of obesity (BMI > 30) (% of adults)") %>%
 #   filter(country %in% clist_avail) %>%
 #   arrange(country, year)
-# 
+#
 # teen_tidy <- obesity_teen %>%
 #   clean_names() %>%
 #   filter(sex == "BTSX") %>%
@@ -882,7 +890,7 @@ teen_tidy <- obesity_teen %>%
 #   mutate(country = countrycode(country, "iso3c", "country.name"),
 #          category = "Prevalence of obesity in children/adolescents aged 10-19 years (% total)") %>%
 #   filter(country %in% clist_avail) %>%
-#   arrange(country, year) 
+#   arrange(country, year)
 
 who_values <- rbind(obesity, teen_tidy)
 
@@ -891,15 +899,15 @@ who_values <- rbind(obesity, teen_tidy)
 url_which <- c()
 for(yoi in 2021:2030) {
   for(x in 1:2) {
-    
+
     df <- data.frame(
       "year" = yoi,
       "exists" =  RCurl::url.exists(paste0("http://pxweb.irena.org/pxweb/en/IRENASTAT/IRENASTAT__Power%20Capacity%20and%20Generation/ELECGEN_", yoi,"_cycle", x, ".px/")),
       "url" = paste0("http://pxweb.irena.org/pxweb/en/IRENASTAT/IRENASTAT__Power%20Capacity%20and%20Generation/ELECGEN_", yoi,"_cycle", x, ".px/")
     )
-    
+
     url_which <- rbind(url_which, df)
-    
+
   }
 }
 
@@ -940,7 +948,7 @@ irena_tidy <- dat %>%
   mutate(year = as.numeric(year),
          value = ifelse(is.na(value), 0, value),
          value = as.numeric(value)) %>%
-  mutate(renewable = ifelse(technology %in% c("Fossil fuels", "Nuclear", "Other non-renewable energy", "Coal and peat", 
+  mutate(renewable = ifelse(technology %in% c("Fossil fuels", "Nuclear", "Other non-renewable energy", "Coal and peat",
                                               "Natural gas", "Fossil fuels n.e.s.", "Oil"), "no", "yes")) %>%
   group_by(country_area, year) %>%
   mutate(tot = sum(value),
@@ -960,7 +968,7 @@ irena_values <- irena_tidy
 # Combine collects dfs
 final_values <- rbind(eccb_values, comtrade_values, unodc_values, who_values, irena_values) %>%
   mutate(country = countrycode(country, "country.name", "country.name"),
-         value = as.numeric(value)) 
+         value = as.numeric(value))
 
 final_values$category[final_values$category == "Intra-regional exports (current US$) (millions)"] <- "Intra-regional exports of goods (current US$) (millions)"
 
@@ -970,10 +978,10 @@ new_dat_priors <- oecs_dat_prior %>%
   select(-iso3c) %>%
   rename(category = variable) %>%
   anti_join(final_values, ., by = c("category", "country", "year")) %>%
-  filter(year < 2020, year >=2000) 
+  filter(year < 2020, year >=2000)
 
 # Give preference to primary databases rather than WDI
-wdi_values <- anti_join(wdi_values, final_values) %>% 
+wdi_values <- anti_join(wdi_values, final_values) %>%
   rbind(., wdi_values)
 
 final_values_cleaned <- final_values %>%
