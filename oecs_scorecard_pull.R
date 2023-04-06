@@ -365,6 +365,7 @@ goods_dat <- goods_dat %>%
   select(-units) %>%
   drop_na()
 
+print("goods finished")
 
 # Trade in services
 
