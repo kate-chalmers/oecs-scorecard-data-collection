@@ -65,6 +65,8 @@ currency_convert_temp2 <- currency_convert %>%
 
 currency_convert_fin <- rbind(currency_convert, currency_convert_temp, currency_convert_temp2)
 
+print("currency finished")
+
 rm(currency_convert, currency_convert_temp, currency_convert_temp2)
 
 # GDP -------------------------------
@@ -104,6 +106,9 @@ gdp_dat_tidy <- gdp_dat %>%
          value = parse_number(value)) %>%
   select(-units) %>%
   drop_na()
+
+print("gdp (not lca) finished")
+
 
 # St Lucia gdp
 url <- "https://www.eccb-centralbank.org/files/Statistics%20Documents/SLU%20Rebased%20GDP_Saint%20Lucia_2007%20to%202023%20(posted%2016%20February%202022).XLSX"
@@ -145,6 +150,9 @@ ag_fishing_lca <- lca_breakdown %>%
          country = "St. Lucia") %>%
   select(-variable) %>%
   arrange(category, year)
+
+print("gdp (lca) finished")
+
 
 # St Vincent gdp
 url <- "https://www.eccb-centralbank.org/files/Statistics%20Documents/Rebased%20GDP_Saint%20Vincent%20and%20the%20Grenadines_2000%20to%202023%20(posted%2016%20February%202022).XLSX"
@@ -188,6 +196,9 @@ ag_fishing_vct <- vct_breakdown %>%
   arrange(category, year)
 
 gdp_dat_full <- rbind(gdp_dat_tidy, gdp_vct, gdp_lca)
+
+print("gdp (vct) finished")
+
 
 # Agriculture LCA, VCT
 agri_dat_small <- rbind(ag_fishing_vct, ag_fishing_lca)
@@ -245,6 +256,7 @@ tourism_dat_fin <- tourism_dat %>%
   mutate(category = ifelse(category == "expend", "International tourism, receipts (current US$) (millions)", "International tourism, receipts per arrival (current US$)")) %>%
   arrange(category, country, year)
 
+print("tourism finished")
 
 # Population projections ------------------
 
@@ -322,6 +334,8 @@ gdp_per_cap <- gdp_dat_full %>%
   mutate(value = (value * 1e6) / pop,
          category = "GDP per capita (current EC$)") %>%
   select(-pop)
+
+print("gdp pc finished")
 
 
 # Exports of goods ------------------
@@ -409,6 +423,8 @@ for(iso2c in iso2c_list) {
 
 }
 
+print("services finished")
+
 
 # Public debt ------------------
 
@@ -447,6 +463,8 @@ debt_dat <- debt_dat %>%
          value = parse_number(value)) %>%
   select(-units) %>%
   drop_na()
+
+print("debt finished")
 
 
 # Agriculture & fishing value added
@@ -518,6 +536,9 @@ scraped_eccb_dat <- scraped_eccb_dat %>% arrange(category, country, year)
 
 eccb_values <- scraped_eccb_dat
 
+print("agri finished")
+
+
 # Comtradr -------------------------------------------------
 # This API can be finicky may have to run twice
 
@@ -562,6 +583,9 @@ regional_tidy <- regional_exports %>%
   mutate(value = value/1e6)
 
 comtrade_values <- regional_tidy
+
+print("comtrader finished")
+
 
 # WDI -------------------------------------------------
 
@@ -839,6 +863,8 @@ for(yoi in 2021:2030) {
 
 unodc_values <- rbind(unodc_values, lca_crime)
 
+print("crime finished")
+
 
 # WHO ---------------------------------------
 # Finicky, have to run twice sometimes
@@ -899,6 +925,9 @@ teen_tidy <- obesity_teen %>%
 #   arrange(country, year)
 
 who_values <- rbind(obesity, teen_tidy)
+
+print("obesity finished")
+
 
 # IRENA --------------
 
@@ -968,6 +997,9 @@ irena_tidy <- dat %>%
   mutate(category = "Renewable electricity output (% of total electricity output)")
 
 irena_values <- irena_tidy
+
+print("renewable finished")
+
 
 # -----------------------
 
