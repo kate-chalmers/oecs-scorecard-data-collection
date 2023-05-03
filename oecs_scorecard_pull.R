@@ -665,48 +665,48 @@ print("WDI finished")
 
 # UNODC ------------------
 
-print("UNODC started")
-
-url <- "https://dataunodc.un.org/sites/dataunodc.un.org/files/data_cts_violent_and_sexual_crime.xlsx"
-GET(url, write_disk(tf <- tempfile(fileext = ".xlsx")), config = httr::config(ssl_verifypeer = FALSE))
-unodc_dat <- readxl::read_excel(tf, 1)
-
-colnames(unodc_dat) <- unodc_dat[2,]
-unodc_dat <- unodc_dat %>% .[-c(1:2),]
-
-unodc_tidy <- unodc_dat %>%
-  clean_names() %>%
-  filter(iso3_code %in% countrycode(clist_iso2c, "iso2c", "iso3c") & category == "Robbery" & unit_of_measurement == "Rate per 100,000 population") %>%
-  mutate(country = countrycode(country, "country.name", "country.name"),
-         category = "Rates of police-recorded offenses (robbery) (per 100,000 population)",
-         value = as.numeric(value),
-         year = as.numeric(year)) %>%
-  select(country, year, value, category)
-
-print("robbery finished")
-
-
-# Intention homicides
-url2 <- "https://dataunodc.un.org/sites/dataunodc.un.org/files/homicide_country_download.xlsx"
-
-GET(url2, write_disk(tf <- tempfile(fileext = ".xlsx")), config = add_headers("openssl_conf" = "openssl_init",
-                                                                              "ssl_conf" = "ssl_sect",
-                                                                              "system_default" = "system_default_sect",
-                                                                              "Options" = "UnsafeLegacyServerConnect"))
-homicide <- readxl::read_excel(tf)
-
-homicide_tidy <- homicide %>%
-  clean_names() %>%
-  filter(unit == "Rate per  100,000 population" & gender == "Total (all ages)") %>%
-  select(country, year, value) %>%
-  mutate(country = countrycode(country, "country.name", "country.name"),
-         category = "Intentional homicides (per 100,000 people)",
-         value = as.numeric(value)) %>%
-  filter(country %in% countrycode(clist_avail, "country.name", "country.name"))
-
-unodc_values <- rbind(unodc_tidy, homicide_tidy)
-
-print("UNODC finished")
+# print("UNODC started")
+#
+# url <- "https://dataunodc.un.org/sites/dataunodc.un.org/files/data_cts_violent_and_sexual_crime.xlsx"
+# GET(url, write_disk(tf <- tempfile(fileext = ".xlsx")), config = httr::config(ssl_verifypeer = FALSE))
+# unodc_dat <- readxl::read_excel(tf, 1)
+#
+# colnames(unodc_dat) <- unodc_dat[2,]
+# unodc_dat <- unodc_dat %>% .[-c(1:2),]
+#
+# unodc_tidy <- unodc_dat %>%
+#   clean_names() %>%
+#   filter(iso3_code %in% countrycode(clist_iso2c, "iso2c", "iso3c") & category == "Robbery" & unit_of_measurement == "Rate per 100,000 population") %>%
+#   mutate(country = countrycode(country, "country.name", "country.name"),
+#          category = "Rates of police-recorded offenses (robbery) (per 100,000 population)",
+#          value = as.numeric(value),
+#          year = as.numeric(year)) %>%
+#   select(country, year, value, category)
+#
+# print("robbery finished")
+#
+#
+# # Intention homicides
+# url2 <- "https://dataunodc.un.org/sites/dataunodc.un.org/files/homicide_country_download.xlsx"
+#
+# GET(url2, write_disk(tf <- tempfile(fileext = ".xlsx")), config = add_headers("openssl_conf" = "openssl_init",
+#                                                                               "ssl_conf" = "ssl_sect",
+#                                                                               "system_default" = "system_default_sect",
+#                                                                               "Options" = "UnsafeLegacyServerConnect"))
+# homicide <- readxl::read_excel(tf)
+#
+# homicide_tidy <- homicide %>%
+#   clean_names() %>%
+#   filter(unit == "Rate per  100,000 population" & gender == "Total (all ages)") %>%
+#   select(country, year, value) %>%
+#   mutate(country = countrycode(country, "country.name", "country.name"),
+#          category = "Intentional homicides (per 100,000 people)",
+#          value = as.numeric(value)) %>%
+#   filter(country %in% countrycode(clist_avail, "country.name", "country.name"))
+#
+# unodc_values <- rbind(unodc_tidy, homicide_tidy)
+#
+# print("UNODC finished")
 
 unodc_values <- c()
 
