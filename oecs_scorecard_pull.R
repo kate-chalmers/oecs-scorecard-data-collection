@@ -668,7 +668,10 @@ print("UNODC started")
 
 url <- "http://dataunodc.un.org/sites/dataunodc.un.org/files/data_cts_violent_and_sexual_crime.xlsx"
 
-GET(url, write_disk(tf <- tempfile(fileext = ".xlsx")), config = add_headers('Options' = 'UnsafeLegacyServerConnect'))
+GET(url, write_disk(tf <- tempfile(fileext = ".xlsx")), config = add_headers("openssl_conf" = "openssl_init",
+                                                                             "ssl_conf" = "ssl_sect",
+                                                                             "system_default" = "system_default_sect",
+                                                                             "Options" = "UnsafeLegacyServerConnect"))
 unodc_dat <- readxl::read_excel(tf, 1)
 
 colnames(unodc_dat) <- unodc_dat[2,]
@@ -686,7 +689,10 @@ unodc_tidy <- unodc_dat %>%
 # Intention homicides
 url2 <- "http://dataunodc.un.org/sites/dataunodc.un.org/files/homicide_country_download.xlsx"
 
-GET(url2, write_disk(tf <- tempfile(fileext = ".xlsx")), config = add_headers('Options' = 'UnsafeLegacyServerConnect'))
+GET(url2, write_disk(tf <- tempfile(fileext = ".xlsx")), config = add_headers("openssl_conf" = "openssl_init",
+                                                                              "ssl_conf" = "ssl_sect",
+                                                                              "system_default" = "system_default_sect",
+                                                                              "Options" = "UnsafeLegacyServerConnect"))
 homicide <- readxl::read_excel(tf)
 
 homicide_tidy <- homicide %>%
