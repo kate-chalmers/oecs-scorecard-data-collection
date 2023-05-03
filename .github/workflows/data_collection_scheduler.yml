@@ -27,7 +27,6 @@ jobs:
             any::zoo
             any::WDI
             any::rjson
-            any::comtradr
             any::httr
             any::readxl
             any::RCurl
