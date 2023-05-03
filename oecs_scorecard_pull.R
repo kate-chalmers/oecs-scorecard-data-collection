@@ -640,7 +640,8 @@ indic.codes <- c("SH.STA.OWAD.ZS",
                  "SH.XPD.OOPC.CH.ZS",
                  "SH.STA.MMRT",
                  "EN.ATM.GHGT.KT.CE",
-                 "ST.INT.ARVL")
+                 "ST.INT.ARVL",
+                 "VC.IHR.PSRC.P5")
 
 vals <- WDI::WDI(indicator = indic.codes, country = clist_iso2c, start=2015, end=(current_year + 1)) %>% select(-iso3c)
 
@@ -666,12 +667,8 @@ print("WDI finished")
 
 print("UNODC started")
 
-url <- "http://dataunodc.un.org/sites/dataunodc.un.org/files/data_cts_violent_and_sexual_crime.xlsx"
-
-GET(url, write_disk(tf <- tempfile(fileext = ".xlsx")), config = add_headers("openssl_conf" = "openssl_init",
-                                                                             "ssl_conf" = "ssl_sect",
-                                                                             "system_default" = "system_default_sect",
-                                                                             "Options" = "UnsafeLegacyServerConnect"))
+url <- "https://dataunodc.un.org/sites/dataunodc.un.org/files/data_cts_violent_and_sexual_crime.xlsx"
+GET(url, write_disk(tf <- tempfile(fileext = ".xlsx")), config = httr::config(ssl_options = 20))
 unodc_dat <- readxl::read_excel(tf, 1)
 
 colnames(unodc_dat) <- unodc_dat[2,]
@@ -686,8 +683,11 @@ unodc_tidy <- unodc_dat %>%
          year = as.numeric(year)) %>%
   select(country, year, value, category)
 
+print("robbery finished")
+
+
 # Intention homicides
-url2 <- "http://dataunodc.un.org/sites/dataunodc.un.org/files/homicide_country_download.xlsx"
+url2 <- "https://dataunodc.un.org/sites/dataunodc.un.org/files/homicide_country_download.xlsx"
 
 GET(url2, write_disk(tf <- tempfile(fileext = ".xlsx")), config = add_headers("openssl_conf" = "openssl_init",
                                                                               "ssl_conf" = "ssl_sect",
