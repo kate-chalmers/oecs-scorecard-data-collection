@@ -674,12 +674,13 @@ unodc_dat <- readxl::read_excel(tf, 1)
 colnames(unodc_dat) <- unodc_dat[2,]
 unodc_dat <- unodc_dat %>% .[-c(1:2),]
 
-
 unodc_tidy <- unodc_dat %>%
   clean_names() %>%
-  filter(iso3_code %in% countrycode(clist_iso2c, "iso2c", "iso3c") & category == "Robbery") %>%
+  filter(iso3_code %in% countrycode(clist_iso2c, "iso2c", "iso3c") & category == "Robbery" & unit_of_measurement == "Rate per 100,000 population") %>%
   mutate(country = countrycode(country, "country.name", "country.name"),
-         category = "Rates of police-recorded offenses (robbery) (per 100,000 population)") %>%
+         category = "Rates of police-recorded offenses (robbery) (per 100,000 population)",
+         value = as.numeric(value),
+         year = as.numeric(year)) %>%
   select(country, year, value, category)
 
 # Intention homicides
