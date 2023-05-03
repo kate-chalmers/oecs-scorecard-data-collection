@@ -7,7 +7,7 @@ library(readxl)
 library(tidyverse)
 library(janitor)
 library(countrycode)
-library(comtradr)
+# library(comtradr)
 library(curl)
 library(RCurl)
 
