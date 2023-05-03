@@ -589,13 +589,6 @@ for(i in 1:length(un_codes)) {
 
 }
 
-regional_exports %>%
-  clean_names() %>%
-  select(reporter = data_reporter_desc, partner = data_partner_desc, year = data_period, trade_value_usd = data_fobvalue) %>%
-  arrange(reporter, year) %>%
-  filter(reporter == "Antigua and Barbuda")
-  distinct()
-
 regional_tidy <- regional_exports %>%
   clean_names() %>%
   select(reporter = data_reporter_desc, partner = data_partner_desc, year = data_period, trade_value_usd = data_fobvalue) %>%
@@ -867,8 +860,6 @@ irena_file <- rownames(df)[which.max(df$mtime)]
 
 dat <- as.data.frame(pxR::read.px(irena_file))
 
-unique(dat$Technology)
-
 irena_tidy <- dat %>%
   clean_names() %>%
   mutate_if(is.factor, as.character) %>%
@@ -925,6 +916,3 @@ final_values_cleaned$variable[final_values_cleaned$variable == "Intra-regional e
 write_csv(final_values_cleaned, paste0("data/", format(Sys.Date(), "%B_%d_%Y"), ".csv"))
 write_csv(final_values_cleaned, paste0("data/", "updated_data", ".csv"))
 write_csv(new_dat_priors, paste0("data/", "new_prior_dat", ".csv"))
-
-
-
