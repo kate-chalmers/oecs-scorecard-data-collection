@@ -668,7 +668,7 @@ print("WDI finished")
 print("UNODC started")
 
 url <- "https://dataunodc.un.org/sites/dataunodc.un.org/files/data_cts_violent_and_sexual_crime.xlsx"
-GET(url, write_disk(tf <- tempfile(fileext = ".xlsx")), config = httr::config(ssl_options = 20))
+GET(url, write_disk(tf <- tempfile(fileext = ".xlsx")), config = httr::config(ssl_verifypeer = FALSE))
 unodc_dat <- readxl::read_excel(tf, 1)
 
 colnames(unodc_dat) <- unodc_dat[2,]
