@@ -18,7 +18,7 @@ library(RCurl)
 # --------------------------------------
 
 # Country filter lists
-clist_avail <- c("Antigua and Barbuda","Dominica","Grenada", "St. Kitts and Nevis", "St. Lucia","St. Vincent and the Grenadines", "Montserrat", "Anguilla")
+clist_avail <- c("Antigua and Barbuda","Dominica","Grenada", "St. Kitts and Nevis", "St. Lucia","St. Vincent and the Grenadines", "Montserrat", "Anguilla") %>% countrycode(., "country.name", "country.name")
 clist_iso2c <- countrycode(clist_avail, "country.name", "iso2c")
 clist_iso3c <- countrycode(clist_avail, "country.name", "iso3c")
 
@@ -545,29 +545,60 @@ print("agri finished")
 comtrade_names <- c("Saint Vincent and the Grenadines", "Saint Kitts and Nevis", "Anguilla",
                     "Montserrat", "Dominica", "Grenada", "Antigua and Barbuda", "Saint Lucia")
 
+un_codes <- c(662,
+              28,
+              308,
+              212,
+              500,
+              659,
+              660,
+              670)
+
+past_years <- paste0(c(2010:2018), collapse=",")
+future_years <- paste0(c(2019:2030), collapse=",")
+
 regional_exports <- c()
-for(i in 1:length(comtrade_names)) {
+for(i in 1:length(un_codes)) {
 
-  reporter <- comtrade_names[i]
-  comtrade_names_short <- comtrade_names[!comtrade_names %in% reporter]
+  reporter <- un_codes[i]
+  partners <-paste0(c(0,un_codes[!un_codes %in% reporter]), collapse = ",")
 
-  partner_list1 <- comtrade_names_short[1:5]
-  partner_list2 <- c(comtrade_names_short[6:length(comtrade_names_short)], "World")
+  url <- paste0("https://comtradeapi.un.org/data/v1/get/C/A/HS?reporterCode=", reporter, "&period=", past_years, "&partnerCode=", partners, "&cmdCode=TOTAL&flowCode=X&customsCode=C01&motCode=1000&aggregateBy=cmdCode&breakdownMode=classic&includeDesc=true")
+  dat <- GET(url, config = add_headers('Cache-Control' = 'no-cache', 'Ocp-Apim-Subscription-Key' = '6e39939d67b64504ab45e2610a82a679'))
 
-  temp <- ct_search(reporters = reporter,
-                    partners = partner_list1,
-                    trade_direction = "exports")
+  if(jsonlite::fromJSON(rawToChar(dat$content))$error == "" & !jsonlite::fromJSON(rawToChar(dat$content))$count == 0) {
+    dat_tidy1 <- jsonlite::fromJSON(rawToChar(dat$content)) %>% as.data.frame()
+  } else {
+    dat_tidy1 <- NULL
+  }
 
-  temp2 <- ct_search(reporters = reporter,
-                     partners = partner_list2,
-                     trade_direction = "exports")
+  Sys.sleep(30)
 
-  regional_exports <- rbind(regional_exports, temp, temp2)
+  url <- paste0("https://comtradeapi.un.org/data/v1/get/C/A/HS?reporterCode=", reporter, "&period=", future_years, "&partnerCode=", partners, "&cmdCode=TOTAL&flowCode=X&customsCode=C01&motCode=1000&aggregateBy=cmdCode&breakdownMode=classic&includeDesc=true")
+  dat <- GET(url, config = add_headers('Cache-Control' = 'no-cache', 'Ocp-Apim-Subscription-Key' = '6e39939d67b64504ab45e2610a82a679'))
+
+  if(jsonlite::fromJSON(rawToChar(dat$content))$error == "" & !jsonlite::fromJSON(rawToChar(dat$content))$count == 0) {
+    dat_tidy2 <-  jsonlite::fromJSON(rawToChar(dat$content)) %>% as.data.frame()
+  } else {
+    dat_tidy2 <- NULL
+  }
+
+  regional_exports <- rbind(regional_exports, dat_tidy1, dat_tidy2)
+
+  Sys.sleep(30)
 
 }
 
+regional_exports %>%
+  clean_names() %>%
+  select(reporter = data_reporter_desc, partner = data_partner_desc, year = data_period, trade_value_usd = data_fobvalue) %>%
+  arrange(reporter, year) %>%
+  filter(reporter == "Antigua and Barbuda")
+  distinct()
+
 regional_tidy <- regional_exports %>%
-  select(reporter, partner, year, trade_value_usd) %>%
+  clean_names() %>%
+  select(reporter = data_reporter_desc, partner = data_partner_desc, year = data_period, trade_value_usd = data_fobvalue) %>%
   arrange(reporter, year) %>%
   filter(!partner == "World") %>%
   group_by(reporter, year) %>%
@@ -585,7 +616,6 @@ regional_tidy <- regional_exports %>%
 comtrade_values <- regional_tidy
 
 print("comtrader finished")
-
 
 # WDI -------------------------------------------------
 
@@ -641,139 +671,7 @@ print("WDI finished")
 
 # UNODC ------------------
 
-# host_url <- "https://public.tableau.com"
-# path <- "/views/Robbery_15704399184380/Robbery_?:embed=y&amp;:showVizHome=no&amp;:host_url=https%3A%2F%2Fpublic.tableau.com%2F&amp;:embed_code_version=3&amp;:tabs=no&amp;:toolbar=no&amp;:animate_transition=yes&amp;:display_static_image=yes&amp;:display_spinner=no&amp;:display_overlay=yes&amp;:display_count=yes&amp;:language=en-US&amp;:loadOrderID=0"
-#
-# body <- read_html(modify_url(host_url,
-#                              path = path))
-#
-# data <- body %>%
-#   html_nodes("textarea#tsConfigContainer") %>%
-#   html_text()
-# json <- fromJSON(data)
-#
-# url <- modify_url(host_url, path = paste(json$vizql_root, "/bootstrapSession/sessions/", json$sessionid, sep =""))
-#
-# resp <- POST(url, body = list(sheet_id = json$sheetId), encode = "form")
-# data <- content(resp, "text")
-#
-# extract <- str_match(data, "\\d+;(\\{.*\\})\\d+;(\\{.*\\})")
-# info <- fromJSON(extract[1,1])
-# data <- fromJSON(extract[1,3])
-#
-# worksheets = names(data$secondaryInfo$presModelMap$vizData$presModelHolder$genPresModelMapPresModel$presModelMap)
-#
-# for(i in 1:length(worksheets)){
-#   print(paste("[",i,"] ",worksheets[i], sep=""))
-# }
-#
-# # worksheet <- "Robbery"
-# # print(paste("you selected :", worksheet, sep=" "))
-#
-# columnsData <- data$secondaryInfo$presModelMap$vizData$presModelHolder$genPresModelMapPresModel$presModelMap[[worksheet]]$presModelHolder$genVizDataPresModel$paneColumnsData
-#
-# i <- 1
-# result <- list();
-# for(t in columnsData$vizDataColumns){
-#   if (is.null(t[["fieldCaption"]]) == FALSE) {
-#     paneIndex <- t$paneIndices
-#     columnIndex <- t$columnIndices
-#     if (length(t$paneIndices) > 1){
-#       paneIndex <- t$paneIndices[1]
-#     }
-#     if (length(t$columnIndices) > 1){
-#       columnIndex <- t$columnIndices[1]
-#     }
-#     result[[i]] <- list(
-#       fieldCaption = t[["fieldCaption"]],
-#       valueIndices = columnsData$paneColumnsList[[paneIndex + 1]]$vizPaneColumns[[columnIndex + 1]]$valueIndices,
-#       aliasIndices = columnsData$paneColumnsList[[paneIndex + 1]]$vizPaneColumns[[columnIndex + 1]]$aliasIndices,
-#       dataType = t[["dataType"]],
-#       stringsAsFactors = FALSE
-#     )
-#     i <- i + 1
-#   }
-# }
-# dataFull = data$secondaryInfo$presModelMap$dataDictionary$presModelHolder$genDataDictionaryPresModel$dataSegments[["0"]]$dataColumns
-#
-# cstring <- list();
-# for(t in dataFull) {
-#   if(t$dataType == "cstring"){
-#     cstring <- t
-#     break
-#   }
-# }
-# data_index <- 1
-# name_index <- 1
-# frameData <-  list()
-# frameNames <- c()
-# for(t in dataFull) {
-#   for(index in result) {
-#     if (t$dataType == index["dataType"]){
-#       if (length(index$valueIndices) > 0) {
-#         j <- 1
-#         vector <- character(length(index$valueIndices))
-#         for (it in index$valueIndices){
-#           vector[j] <- t$dataValues[it+1]
-#           j <- j + 1
-#         }
-#         frameData[[data_index]] <- vector
-#         frameNames[[name_index]] <- paste(index$fieldCaption, "value", sep="-")
-#         data_index <- data_index + 1
-#         name_index <- name_index + 1
-#       }
-#       if (length(index$aliasIndices) > 0) {
-#         j <- 1
-#         vector <- character(length(index$aliasIndices))
-#         for (it in index$aliasIndices){
-#           if (it >= 0){
-#             vector[j] <- t$dataValues[it+1]
-#           } else {
-#             vector[j] <- cstring$dataValues[abs(it)]
-#           }
-#           j <- j + 1
-#         }
-#         frameData[[data_index]] <- vector
-#         frameNames[[name_index]] <- paste(index$fieldCaption, "alias", sep="-")
-#         data_index <- data_index + 1
-#         name_index <- name_index + 1
-#       }
-#     }
-#   }
-# }
-#
-# df <- NULL
-# lengthList <- c()
-# for(i in 1:length(frameNames)){
-#   lengthList[i] <- length(frameData[[i]])
-# }
-# max <- max(lengthList)
-# for(i in 1:length(frameNames)){
-#   if (length(frameData[[i]]) < max){
-#     len <- length(frameData[[i]])
-#     frameData[[i]][(len+1):max]<-""
-#   }
-#   df[frameNames[[i]]] <- frameData[i]
-# }
-# options(width = 1200)
-# df <- as.data.frame(df, stringsAsFactors = FALSE)
-# print(df)
-# unodc_dat <- df
-#
-# rm(body, columnsData, cstring, data, dataFull, extract, frameData, frameNames, index, json, resp, result, t,
-#    columnIndex, data_index, i, it, j, lengthList, max, name_index, paneIndex, vector, worksheet,
-#    worksheets)
-#
-# unodc_tidy <- unodc_dat %>%
-#   janitor::clean_names() %>%
-#   select(country_value, year_value, measure_values_alias, measure_names_alias) %>%
-#   filter(measure_names_alias == "Rate") %>%
-#   select(-measure_names_alias) %>%
-#   mutate(category = "Rates of police-recorded offenses (robbery) (per 100,000 population)",
-#          country = countrycode(country_value, "country.name", "country.name")) %>%
-#   filter(country %in% countrycode(clist_avail, "country.name", "country.name")) %>%
-#   select(country, "year" = "year_value", "value" = "measure_values_alias", category)
-
+print("UNODC started")
 
 url <- "http://dataunodc.un.org/sites/dataunodc.un.org/files/data_cts_violent_and_sexual_crime.xlsx"
 
@@ -783,14 +681,6 @@ unodc_dat <- readxl::read_excel(tf, 1)
 colnames(unodc_dat) <- unodc_dat[2,]
 unodc_dat <- unodc_dat %>% .[-c(1:2),]
 
-print("UNODC started")
-
-
-# download.file(url,"./data/undoc_dat.xlsx",
-#               method="curl",
-#               mode="wb")
-#
-# unodc_dat <- readxl::read_excel("./data/undoc_dat.xlsx",skip=2)
 
 unodc_tidy <- unodc_dat %>%
   clean_names() %>%
@@ -817,6 +707,8 @@ homicide_tidy <- homicide %>%
   filter(country %in% countrycode(clist_avail, "country.name", "country.name"))
 
 unodc_values <- rbind(unodc_tidy, homicide_tidy)
+
+print("UNODC finished")
 
 unodc_values <- c()
 
