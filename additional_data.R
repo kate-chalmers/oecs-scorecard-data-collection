@@ -41,11 +41,11 @@ unemp_dat <- data.frame(
   year = c(2021)
 )
 
-# Formal employment value added EC$ (Formal employment / GDP in market prices (EC$))
+# Formal employment value added EC$ (Number formal employees / GDP in market prices (EC$))
 
 
 
-# Formal employment ratio (Formal employment / Population 15-65)
+# Formal employment ratio (Number formal employees / Population 15-65)
 
 
 
