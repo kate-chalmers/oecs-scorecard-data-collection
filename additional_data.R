@@ -50,11 +50,12 @@ unemp_dat <- data.frame(
 
 
 # Cleaning and shaping
+new_dat <- rbind(homicide_dat, robbery_dat) # append dfs here
 
 updated_dat <- read_csv(paste0("data/", "updated_data", ".csv"))
-null_cols <- setdiff(colnames(updated_dat), colnames(new_dat)) %>% as.numeric(.) %>% max(.)
+null_cols <- setdiff(colnames(updated_dat %>% select(-variable, -iso3c)), colnames(new_dat %>% select(-category, -country))) %>% as.numeric(.) %>% max(.)
 
-new_dat <- rbind(homicide_dat, robbery_dat) %>% # add in any new data.frames with new values > 2020
+new_dat <- new_dat %>% # add in any new data.frames with new values > 2020
   filter(year > 2020 & year < (current_year + 1)) %>%
   group_by(category, country) %>%
   complete(year = 2021:null_cols) %>%
@@ -63,7 +64,7 @@ new_dat <- rbind(homicide_dat, robbery_dat) %>% # add in any new data.frames wit
   mutate(iso3c = countrycode(country, "country.name", "iso3c")) %>%
   select("variable" = "category", iso3c, starts_with("20"))
 
-fin_dat <- rbind(updated_dat,new_dat)
+final_values_cleaned <- rbind(updated_dat,new_dat)
 
 write_csv(final_values_cleaned, paste0("data/", format(Sys.Date(), "%B_%d_%Y"), ".csv"))
 write_csv(final_values_cleaned, paste0("data/", "updated_data", ".csv"))
