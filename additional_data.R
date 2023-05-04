@@ -33,13 +33,12 @@ robbery_dat <- read_excel("./additional data storage/data_cts_violent_and_sexual
   filter(country %in% clist_avail)
 
 
-# Example for adding new data
-
+# !!! Example only for adding new data !!!
 unemp_dat <- data.frame(
   category = c("Unemployment, total (% of total labor force) (national estimate)"),
-  iso3c = c("ATG"),
+  country = c("Dominica"),
   value = c(5),
-  year = c(2020)
+  year = c(2021)
 )
 
 # Formal employment value added EC$ (Formal employment / GDP in market prices (EC$))
@@ -68,5 +67,22 @@ fin_dat <- rbind(updated_dat,new_dat)
 
 write_csv(final_values_cleaned, paste0("data/", format(Sys.Date(), "%B_%d_%Y"), ".csv"))
 write_csv(final_values_cleaned, paste0("data/", "updated_data", ".csv"))
+
+# Adding in prior data
+
+prior_dat <- read_csv(paste0("data/", "new_prior_dat", ".csv"))
+
+# EXAMPLE ONLY for adding in data points
+unemp_dat <- data.frame(
+  category = c("Unemployment, total (% of total labor force) (national estimate)"),
+  country = c("Dominica"),
+  value = c(5),
+  year = c(2018)
+)
+
+# Add in df to be appended
+prior_dat_new <- rbind(prior_dat)
+
+write_csv(prior_dat_new, paste0("data/", "new_prior_dat", ".csv"))
 
 
