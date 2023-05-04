@@ -1,6 +1,5 @@
 on:
-  schedule:
-    - cron: "0 0 1,15 * *"
+  push
     
 jobs:
   scrape:
@@ -20,20 +19,10 @@ jobs:
         with:
           cache-version: 2
           packages: |
-            any::RSelenium
             any::countrycode
             any::tidyverse
-            any::rvest
             any::janitor
-            any::zoo
-            any::WDI
-            any::rjson
-            any::httr
             any::readxl
-            any::RCurl
-            any::pxR
-            any::netstat
-            any::curl
             
       - name: Cache R packages
         uses: actions/cache@v2
@@ -45,7 +34,7 @@ jobs:
     
       - name: Rscript run
         run: |
-          Rscript oecs_scorecard_pull.R
+          additional data.R
           
       - name: Commit results
         run: |

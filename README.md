@@ -1,10 +1,14 @@
 # OECS Scorecard Scraper
 
-This github repository hosts the web scraper used to collect the data to be fed into the [OECS Scorecard](https://cds-tools.shinyapps.io/OECS-scorecard/). 
+This github repository hosts the web scraper used to collect the data to be fed into the OECS Scorecard.
 
-There are two indicators that have not been automated, which are the following indicators:
+There are four indicators that have not been automated, which are the following indicators:
 1. Value added per formal employee (EC$)
 2. Formal employment-population ratio, 15+ (%)
+3. Intentional homicides (per 100,000 people)
+4. Rates of police-recorded offenses (robbery) (per 100,000 population)
+
+These can be added into the additional data folder and cleaned and apended to the updated data file.  
 
 <hr>
 
@@ -15,7 +19,6 @@ Stablity of indicator collection means that collection of indicator depends on w
 | ------------- | ------------- |
 | ❌ | ECCB |
 | ✅ | WDI  |
-| ❌ | UNODC  |
 | ❌ | UN population projections  |
 | ❌ | IRENASTAT  |
 | ✅ | WHO  |
