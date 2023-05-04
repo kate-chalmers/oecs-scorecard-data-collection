@@ -34,7 +34,7 @@ jobs:
     
       - name: Rscript run
         run: |
-          additional data.R
+          additional_data.R
           
       - name: Commit results
         run: |
