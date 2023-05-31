@@ -12,6 +12,11 @@ These can be added into the additional data folder and cleaned and apended to th
 
 <hr>
 
+UNODC xlsx cannot be downloaded with R script running on Github Actions (SSL security error). The datasets may be downloaded from here, which can then replace previous versions in the *additional data storage* folder. 
+**Homicide here:** https://dataunodc.un.org/dp-intentional-homicide-victims (click download dataset)
+**Robbery here:** https://dataunodc.un.org/dp-crime-violent-offences (click download dataset)
+The formal employment and value added per formal employee data should also be included in this folder. 
+
 Stablity of indicator collection means that collection of indicator depends on web scraping or collection methodologies other than APIs collected through maintained libraries. The indicators source and stability of collection are summarized below:
 
 
